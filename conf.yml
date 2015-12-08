@@ -1,7 +1,35 @@
 server:
   applicationConnectors:
-    - type: http
-      port: 8080
+    - type: https
+      port: 8443
+
+      # Key store settings
+      keyStorePath: classpath:tls/keystore.jks
+      keyStorePassword: "notsecret"
+      keyStoreType: JCEKS
+      certAlias: sage-tls
+
+      # Trust store settings
+      trustStorePath: classpath:tls/truststore.jks
+      trustStorePassword: "notsecret"
+      trustStoreType: JCEKS
+
+      enableCRLDP: true
+
+      # Fail fast at startup if the certificates are invalid
+      validateCerts: false
+
+      # Whether or not to require authentication by peer certificate.
+      needClientAuth: true
+
+      # Check peer certificates for validity when establishing a connection
+      validatePeers: true
+
+      # The list of supported SSL/TLS protocols. You may need to modify
+      # this section to support clients that you have.
+      supportedProtocols: ["TLSv1.2"]
+      supportedCipherSuites: ["TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384"]
+      allowRenegotiation: false
 
   adminConnectors:
     - type: http

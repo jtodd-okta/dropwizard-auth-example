@@ -3,6 +3,8 @@ This sample application was developed to provide an example for implementing aut
 Dropwizard. Included in this sample are TLS Client Authentication service auth and OpenID Connect user auth.
 
 # Overview
+
+## Auth
 This application authenticates it's clients in two ways:
 
 1. Service authentication is performed via TLS Client Authentication with another layer of application layer filtering.
@@ -11,6 +13,12 @@ This application authenticates it's clients in two ways:
 The commit history should give an idea of what is needed for each step of authentication / authorization implemented
 here.
 
+The application uses custom certificates issued by a custom CA. In order for the application to start, the JVM must
+trust the root CA. In order to accomplish this, the application overrides Java's trustStore at runtime with a custom
+file. The password is "changeit" should you need to edit it. WARNING: DO NOT MAKE JAVA TRUST THIS STORE BY DEFAULT! The
+CA that's backing this example is not secure for public communication and is meant for demonstration only.
+
+## What the app does
 The functionality of the application is fairly simple; The application serves information about users. As the backend
 data store is not the focus of this application, a simple, static, text file is used to store information with no update
 functionality.
@@ -36,7 +44,7 @@ To test the application, run the following commands.
 - To run the server, run:
 
   ```
-  java -jar target/auth-example-0.0.1-SNAPSHOT.jar server conf.yml
+  java -jar target/auth-example-0.1.0-SNAPSHOT.jar server conf.yml
   ```
 
 - To get all the users, run:

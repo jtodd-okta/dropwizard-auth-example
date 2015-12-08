@@ -6,6 +6,10 @@ import io.dropwizard.setup.Environment;
 import wdawson.samples.dropwizard.configuration.UserInfoConfiguration;
 import wdawson.samples.dropwizard.health.UserInfoHealthCheck;
 import wdawson.samples.dropwizard.resources.UserInfoResource;
+import wdawson.samples.dropwizard.util.resources.ClasspathURLStreamHandler;
+import wdawson.samples.dropwizard.util.resources.ConfigurableURLStreamHandlerFactory;
+
+import java.net.URL;
 
 /**
  * Sample Dropwizard application
@@ -22,6 +26,17 @@ public class UserInfoApplication extends Application<UserInfoConfiguration> {
     @Override
     public void initialize(Bootstrap<UserInfoConfiguration> bootstrap) {
         super.initialize(bootstrap);
+
+        // allow the classpath protocol for urls
+        ConfigurableURLStreamHandlerFactory urlHandlerFactory = new ConfigurableURLStreamHandlerFactory()
+                .withHandler(ClasspathURLStreamHandler.PROTOCOL, new ClasspathURLStreamHandler())
+                // Get default java handlers for known protocols
+                .withStandardJavaHandlers();
+
+        URL.setURLStreamHandlerFactory(urlHandlerFactory);
+
+        System.setProperty("javax.net.ssl.trustStore", "java-cacerts.jks");
+        System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
     }
 
     @Override
